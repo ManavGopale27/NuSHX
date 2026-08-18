@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>NUSHX — AI PDF Assistant</title>
+
+    <meta
+        name="description"
+        content="NUSHX — Ask questions and understand your PDFs with AI."
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
+<div class="bg-grid"></div>
+
+<div class="glow glow-purple"></div>
+
+<div class="glow glow-pink"></div>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            ✦
+        </div>
+
+        <div>
+
+            <div class="brand-name">
+                NUSHX
+            </div>
+
+            <div class="brand-tagline">
+                PDF Intelligence
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-status">
+
+        <span class="status-dot"></span>
+
+        AI READY
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-badge">
+
+        <span>✦</span>
+
+        AI • RAG • PDF
+
+    </div>
+
+
+    <h1>
+
+        Your PDFs.
+        <br>
+
+        <span class="gradient-text">
+            Your AI.
+        </span>
+
+    </h1>
+
+
+    <p>
+
+        Upload a PDF, ask questions, and get
+        intelligent answers directly from your
+        document.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     MAIN APPLICATION
+===================================================== -->
+
+<main class="workspace">
+
+
+    <!-- =================================================
+         LEFT — DOCUMENT
+    ================================================= -->
+
+    <section class="card document-card">
+
+
+        <div class="card-heading">
+
+            <div>
+
+                <div class="eyebrow">
+                    01 / DOCUMENT
+                </div>
+
+                <h2>
+                    Upload your PDF
+                </h2>
+
+            </div>
+
+            <div class="card-icon">
+                📄
+            </div>
+
+        </div>
+
+
+        <!-- UPLOAD AREA -->
+
+        <label
+            class="upload-area"
+            id="uploadArea"
+            for="pdfFile"
+        >
+
+            <div class="upload-symbol">
+                ↑
+            </div>
+
+
+            <h3>
+                Drop your PDF here
+            </h3>
+
+
+            <p>
+                or click to browse your files
+            </p>
+
+
+            <span class="file-rule">
+                PDF only • Max recommended size 20 MB
+            </span>
+
+        </label>
+
+
+        <input
+            type="file"
+            id="pdfFile"
+            accept=".pdf,application/pdf"
+            hidden
+        >
+
+
+        <!-- SELECTED FILE -->
+
+        <div
+            class="selected-file"
+            id="selectedFile"
+        >
+
+            <div class="file-icon">
+                PDF
+            </div>
+
+
+            <div class="file-details">
+
+                <strong
+                    id="fileName"
+                >
+                    document.pdf
+                </strong>
+
+                <span
+                    id="fileSize"
+                >
+                    0 KB
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="remove-file"
+                id="removeFile"
+                title="Remove PDF"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- DOCUMENT STATUS -->
+
+        <div
+            class="document-status"
+            id="documentStatus"
+        >
+
+            <span class="status-dot"></span>
+
+            <span id="statusText">
+                Waiting for PDF
+            </span>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="document-stats">
+
+
+            <div class="stat-box">
+
+                <span>
+                    PAGES
+                </span>
+
+                <strong id="pageCount">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <span>
+                    CHUNKS
+                </span>
+
+                <strong id="chunkCount">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <span>
+                    STATUS
+                </span>
+
+                <strong id="processingStatus">
+                    —
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         CENTER — CHAT
+    ================================================= -->
+
+    <section class="card chat-card">
+
+
+        <div class="card-heading">
+
+            <div>
+
+                <div class="eyebrow">
+                    02 / ASK NUSHX
+                </div>
+
+                <h2>
+                    Talk to your document
+                </h2>
+
+            </div>
+
+
+            <div class="ai-badge">
+
+                <span class="status-dot"></span>
+
+                ONLINE
+
+            </div>
+
+        </div>
+
+
+        <!-- USER INSTRUCTIONS -->
+
+        <div class="instructions">
+
+            <div class="instruction-icon">
+                💡
+            </div>
+
+
+            <div>
+
+                <strong>
+                    How to use NUSHX
+                </strong>
+
+
+                <p>
+                    Upload a PDF → wait for processing
+                    → enter your question → get an
+                    AI answer based on your document.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CHAT AREA -->
+
+        <div
+            class="chat-area"
+            id="chatArea"
+        >
+
+
+            <!-- INITIAL STATE -->
+
+            <div
+                class="empty-chat"
+                id="emptyChat"
+            >
+
+                <div class="empty-icon">
+                    ✨
+                </div>
+
+
+                <h3>
+                    Ready when you are.
+                </h3>
+
+
+                <p>
+                    Upload a PDF and start asking
+                    questions about it.
+                </p>
+
+
+                <!-- EXAMPLE QUESTIONS -->
+
+                <div class="suggestions">
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                    >
+                        What is this PDF about?
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                    >
+                        Summarize the main points
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                    >
+                        Explain this in simple words
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                    >
+                        What are the key findings?
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUESTION INPUT -->
+
+        <div class="question-section">
+
+
+            <div class="question-label">
+
+                <span>
+                    YOUR QUESTION
+                </span>
+
+                <span>
+                    Enter ↵
+                </span>
+
+            </div>
+
+
+            <div class="question-box">
+
+
+                <textarea
+                    id="questionInput"
+                    rows="1"
+                    placeholder="Ask anything about your PDF..."
+                    disabled
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    id="askButton"
+                    disabled
+                    title="Ask NUSHX"
+                >
+                    ↑
+                </button>
+
+
+            </div>
+
+
+            <div class="privacy-note">
+
+                🔒 NUSHX uses your uploaded document
+                as the source for answers.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         RIGHT — RAG PIPELINE
+    ================================================= -->
+
+    <section class="card pipeline-card">
+
+
+        <div class="card-heading">
+
+            <div>
+
+                <div class="eyebrow">
+                    03 / RAG PIPELINE
+                </div>
+
+                <h2>
+                    What's happening?
+                </h2>
+
+            </div>
+
+
+            <div class="card-icon">
+                ⚡
+            </div>
+
+        </div>
+
+
+        <p class="pipeline-intro">
+
+            NUSHX doesn't simply guess. It finds
+            relevant information from your PDF
+            before generating an answer.
+
+        </p>
+
+
+        <!-- PIPELINE -->
+
+        <div class="pipeline">
+
+
+            <!-- STEP 1 -->
+
+            <div
+                class="pipeline-step"
+                id="stepUpload"
+            >
+
+                <div class="step-number">
+                    01
+                </div>
+
+
+                <div class="step-line"></div>
+
+
+                <div class="step-content">
+
+                    <strong>
+                        PDF Upload
+                    </strong>
+
+                    <span>
+                        Your document enters NUSHX.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 2 -->
+
+            <div
+                class="pipeline-step"
+                id="stepExtract"
+            >
+
+                <div class="step-number">
+                    02
+                </div>
+
+
+                <div class="step-line"></div>
+
+
+                <div class="step-content">
+
+                    <strong>
+                        Text Extraction
+                    </strong>
+
+                    <span>
+                        Text is extracted from each page.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 3 -->
+
+            <div
+                class="pipeline-step"
+                id="stepChunk"
+            >
+
+                <div class="step-number">
+                    03
+                </div>
+
+
+                <div class="step-line"></div>
+
+
+                <div class="step-content">
+
+                    <strong>
+                        Chunking
+                    </strong>
+
+                    <span>
+                        Large text is divided into smaller chunks.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 4 -->
+
+            <div
+                class="pipeline-step"
+                id="stepTfidf"
+            >
+
+                <div class="step-number">
+                    04
+                </div>
+
+
+                <div class="step-line"></div>
+
+                <div class="step-content">
+
+                    <strong>
+                        TF-IDF
+                    </strong>
+
+                    <span>
+                        Text is converted into numerical vectors.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 5 -->
+
+            <div
+                class="pipeline-step"
+                id="stepRetrieve"
+            >
+
+                <div class="step-number">
+                    05
+                </div>
+
+
+                <div class="step-line"></div>
+
+                <div class="step-content">
+
+                    <strong>
+                        Similarity Search
+                    </strong>
+
+                    <span>
+                        Relevant chunks are retrieved.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 6 -->
+
+            <div
+                class="pipeline-step"
+                id="stepAI"
+            >
+
+                <div class="step-number">
+                    06
+                </div>
+
+
+                <div class="step-content">
+
+                    <strong>
+                        AI Answer
+                    </strong>
+
+                    <span>
+                        Groq generates the final response.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RETRIEVED CONTEXT -->
+
+        <div
+            class="context-panel"
+            id="contextPanel"
+            hidden
+        >
+
+            <div class="context-heading">
+
+                <strong>
+                    Retrieved Context
+                </strong>
+
+                <span id="similarityScore">
+                    —
+                </span>
+
+            </div>
+
+
+            <p id="contextText">
+                Relevant document content will
+                appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     HOW IT WORKS
+===================================================== -->
+
+<section class="how-section">
+
+
+    <div class="section-heading">
+
+        <div class="eyebrow">
+            BUILT FOR YOUR DOCUMENTS
+        </div>
+
+        <h2>
+            Simple on the surface.
+            <span class="gradient-text">
+                Smart underneath.
+            </span>
+        </h2>
+
+    </div>
+
+
+    <div class="how-grid">
+
+
+        <div class="how-card">
+
+            <div class="how-number">
+                01
+            </div>
+
+            <h3>
+                Upload
+            </h3>
+
+            <p>
+                Give NUSHX a PDF and it prepares
+                the document for intelligent search.
+            </p>
+
+        </div>
+
+
+        <div class="how-card">
+
+            <div class="how-number">
+                02
+            </div>
+
+            <h3>
+                Retrieve
+            </h3>
+
+            <p>
+                TF-IDF and cosine similarity find
+                the most relevant parts of your PDF.
+            </p>
+
+        </div>
+
+
+        <div class="how-card">
+
+            <div class="how-number">
+                03
+            </div>
+
+            <h3>
+                Answer
+            </h3>
+
+            <p>
+                Groq uses the retrieved context
+                to generate a clear answer.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-brand">
+        ✦ NUSHX
+    </div>
+
+    <span>
+        AI PDF Intelligence • RAG Powered
+    </span>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    src="{{ url_for('static', filename='js/script.js') }}"
+></script>
+
+
+</body>
+
+</html>
